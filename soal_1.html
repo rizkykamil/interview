@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form to Table</title>
+    <style>
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Form to Table Generator</h1>
+    <form id="userForm">
+        <label for="inputText">Enter data (Format: name age city):</label><br><br>
+        <input type="text" id="inputText" placeholder="e.g., edysupriadi 25 malang" required>
+        <button type="button" onclick="generateTable()">Submit</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        function generateTable() {
+            const input = document.getElementById('inputText').value;
+            const outputDiv = document.getElementById('output');
+
+            outputDiv.innerHTML = '';
+
+            const regex = /^([a-zA-Z]+)\s(\d+)\s([a-zA-Z]+)$/;
+            const match = input.match(regex);
+
+            if (match) {
+                const [_, name, age, city] = match;
+
+                if (isNaN(age)) {
+                    outputDiv.textContent = 'Age must be a number.';
+                    return;
+                }
+
+                const table = document.createElement('table');
+                const headerRow = table.insertRow();
+                const headers = ['Name', 'Age', 'City'];
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+
+                const dataRow = table.insertRow();
+                const data = [name, `${age}th`, city];
+                data.forEach(dataText => {
+                    const td = document.createElement('td');
+                    td.textContent = dataText;
+                    dataRow.appendChild(td);
+                });
+
+                outputDiv.appendChild(table);
+            } else {
+                outputDiv.textContent = 'Invalid format. Please use: name age city (e.g., edysupriadi 25 malang)';
+            }
+        }
+    </script>
+</body>
+
+</html>
